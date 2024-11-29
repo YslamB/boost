@@ -1,0 +1,5 @@
+.env
+Makefile
+config.yml
+*/logs/
+*.log

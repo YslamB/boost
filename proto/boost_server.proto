@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package boost;
+option go_package = "boost/im_repo_boost";
+
+
+service BoostService {
+
+    rpc BoostPost(BoostRequest) returns (BoostResponse);
+
+
+    rpc GetBoostedPosts(EmptyRequest) returns (BoostedPostsResponse);
+
+
+    rpc GetBoostStats(BoostStatsRequest) returns (BoostStatsResponse);
+}
+
+message BoostRequest {
+    string user_id = 1;       
+    string post_id = 2;       
+    int32 duration_hours = 3; 
+    int32 view_target = 4;    
+}
+
+message BoostResponse {
+    string message = 1;       
+    bool success = 2;         
+}
+
+message BoostStatsRequest {
+    string post_id = 1;       
+}
+
+message BoostStatsResponse {
+    int32 views = 1;          
+    int32 profile_clicks = 2; 
+}
+
+message BoostedPostsResponse {
+    repeated BoostedPost posts = 1; 
+}
+
+message BoostedPost {
+    string post_id = 1;       
+    string user_id = 2;       
+    int32 views = 3;          
+    int32 profile_clicks = 4; 
+}
+
+message EmptyRequest {}

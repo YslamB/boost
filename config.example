@@ -1,0 +1,24 @@
+is_debug: true
+file_path: ./../log
+grpc_repo:
+  host: localhost
+  port: :3001
+storage:
+  psql:
+    host: localhost
+    port: 5432
+    database: postgres
+    username: postgres
+    password: 12345
+    pg_pool_max_conn: 400
+  redis:
+    addr: localhost
+    port: 6379
+    username:
+    password:
+    db: 0
+log:
+  path: ./logs
+  filename: file-write.log
+jwt:
+  registration: jwt_key_gizlin_2
