@@ -27,14 +27,9 @@ const (
 // BoostServiceClient is the client API for BoostService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-//
-// Boost Servisi
 type BoostServiceClient interface {
-	// Postu boost et
 	BoostPost(ctx context.Context, in *BoostRequest, opts ...grpc.CallOption) (*BoostResponse, error)
-	// Boost edilmiş postları getir
 	GetBoostedPosts(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*BoostedPostsResponse, error)
-	// Boost edilmiş bir postun istatistiklerini getir
 	GetBoostStats(ctx context.Context, in *BoostStatsRequest, opts ...grpc.CallOption) (*BoostStatsResponse, error)
 }
 
@@ -79,14 +74,9 @@ func (c *boostServiceClient) GetBoostStats(ctx context.Context, in *BoostStatsRe
 // BoostServiceServer is the server API for BoostService service.
 // All implementations must embed UnimplementedBoostServiceServer
 // for forward compatibility.
-//
-// Boost Servisi
 type BoostServiceServer interface {
-	// Postu boost et
 	BoostPost(context.Context, *BoostRequest) (*BoostResponse, error)
-	// Boost edilmiş postları getir
 	GetBoostedPosts(context.Context, *EmptyRequest) (*BoostedPostsResponse, error)
-	// Boost edilmiş bir postun istatistiklerini getir
 	GetBoostStats(context.Context, *BoostStatsRequest) (*BoostStatsResponse, error)
 	mustEmbedUnimplementedBoostServiceServer()
 }

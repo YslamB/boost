@@ -1,30 +1,43 @@
-include .env
+CONFIG_FILE=config.yml
+
+DB_HOST=$(shell yq eval '.database.host' $(CONFIG_FILE))
+DB_PORT=$(shell yq eval '.database.port' $(CONFIG_FILE))
+DB_USER=$(shell yq eval '.database.user' $(CONFIG_FILE))
+DB_NAME=$(shell yq eval '.database.name' $(CONFIG_FILE))
+
 
 dev:
 	@echo "Running the app..."
 	@go run main.go
 db:
-	@echo "Initializing boostdd database..."
+	@echo "Initializing boost database..."
 	@psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d postgres \
-		-f ./pkg/database/init/init.sql
-	@psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d boostdd \
 		-f ./pkg/database/init/create.sql
-	@psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d boostdd \
+	@psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d postgres \
 		-f ./pkg/database/init/insert.sql
-	@psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d boostdd \
+	@psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d postgres \
 		-f ./pkg/database/init/functions.sql
 	@echo "Has been successfully created"
 build:
 	@echo "Building the app, please wait..."
-	@go build -o ./bin/boostdd main.go
+	@go build -o ./bin/boostd main.go
 	@echo "Done."
 build-cross:
 	@echo "Bulding for windows, linux and macos (darwin m2), please wait..."
-	@GOOS=linux GOARCH=amd64 go build -o ./bin/boostdd-linux main.go
-	@GOOS=darwin GOARCH=arm64 go build -o ./bin/boostdd-macos main.go
-	@GOOS=windows GOARCH=amd64 go build -o ./bin/boostdd-windows main.go
+	@GOOS=linux GOARCH=amd64 go build -o ./bin/boost-linux main.go
+	@GOOS=darwin GOARCH=arm64 go build -o ./bin/boost-macos main.go
+	@GOOS=windows GOARCH=amd64 go build -o ./bin/boost-windows main.go
 	@echo "Done."
-deploy:
-	scp ./bin/boostdd-linux ussa@172.16.19.104:/var/www/ussa/
-deploy-db:
-	scp -r ./database/init ussa@172.16.19.104:/var/www/ussa/
+
+# deploy:
+# 	scp ./bin/boost-linux boost@$(DEPLOY_HOST):/var/www/boost/
+# deploy-db:
+# 	scp -r ./database/init boost@$(DEPLOY_HOST_DB):/var/www/boost/
+
+protoc:
+	protoc --go_out=./im_repo_boost --go_opt=paths=source_relative --go-grpc_out=./im_repo_boost --go-grpc_opt=paths=source_relative --proto_path=./proto ./proto/boost_server.proto
+
+install:
+	go get google.golang.org/protobuf
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest

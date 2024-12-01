@@ -5,21 +5,16 @@ option go_package = "boost/im_repo_boost";
 
 
 service BoostService {
-
     rpc BoostPost(BoostRequest) returns (BoostResponse);
-
-
     rpc GetBoostedPosts(EmptyRequest) returns (BoostedPostsResponse);
-
-
     rpc GetBoostStats(BoostStatsRequest) returns (BoostStatsResponse);
 }
 
 message BoostRequest {
     string user_id = 1;       
     string post_id = 2;       
-    int32 duration_hours = 3; 
-    int32 view_target = 4;    
+    int32 target_date = 3; 
+    int32 target_view = 4;    
 }
 
 message BoostResponse {

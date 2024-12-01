@@ -20,16 +20,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Boost Etme İsteği
 type BoostRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                       // Kullanıcı ID
-	PostId        string `protobuf:"bytes,2,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"`                       // Boost edilecek post ID
-	DurationHours int32  `protobuf:"varint,3,opt,name=duration_hours,json=durationHours,proto3" json:"duration_hours,omitempty"` // Boost süresi (saat)
-	ViewTarget    int32  `protobuf:"varint,4,opt,name=view_target,json=viewTarget,proto3" json:"view_target,omitempty"`          // Hedeflenen izlenme sayısı
+	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	PostId        string `protobuf:"bytes,2,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"`
+	DurationHours int32  `protobuf:"varint,3,opt,name=duration_hours,json=durationHours,proto3" json:"duration_hours,omitempty"`
+	ViewTarget    int32  `protobuf:"varint,4,opt,name=view_target,json=viewTarget,proto3" json:"view_target,omitempty"`
 }
 
 func (x *BoostRequest) Reset() {
@@ -90,14 +89,13 @@ func (x *BoostRequest) GetViewTarget() int32 {
 	return 0
 }
 
-// Boost Etme Yanıtı
 type BoostResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`  // İşlem sonucu mesajı
-	Success bool   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"` // İşlem başarılı mı
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Success bool   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
 }
 
 func (x *BoostResponse) Reset() {
@@ -144,13 +142,12 @@ func (x *BoostResponse) GetSuccess() bool {
 	return false
 }
 
-// Boosta İlişkin İstatistikler İsteği
 type BoostStatsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PostId string `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"` // İlgili post ID
+	PostId string `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"`
 }
 
 func (x *BoostStatsRequest) Reset() {
@@ -190,14 +187,13 @@ func (x *BoostStatsRequest) GetPostId() string {
 	return ""
 }
 
-// İstatistik Yanıtı
 type BoostStatsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Views         int32 `protobuf:"varint,1,opt,name=views,proto3" json:"views,omitempty"`                                      // Toplam izlenme
-	ProfileClicks int32 `protobuf:"varint,2,opt,name=profile_clicks,json=profileClicks,proto3" json:"profile_clicks,omitempty"` // Profile geçiş sayısı
+	Views         int32 `protobuf:"varint,1,opt,name=views,proto3" json:"views,omitempty"`
+	ProfileClicks int32 `protobuf:"varint,2,opt,name=profile_clicks,json=profileClicks,proto3" json:"profile_clicks,omitempty"`
 }
 
 func (x *BoostStatsResponse) Reset() {
@@ -244,13 +240,12 @@ func (x *BoostStatsResponse) GetProfileClicks() int32 {
 	return 0
 }
 
-// Boost edilmiş postları dönen yanıt
 type BoostedPostsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Posts []*BoostedPost `protobuf:"bytes,1,rep,name=posts,proto3" json:"posts,omitempty"` // Boost edilmiş postlar listesi
+	Posts []*BoostedPost `protobuf:"bytes,1,rep,name=posts,proto3" json:"posts,omitempty"`
 }
 
 func (x *BoostedPostsResponse) Reset() {
@@ -290,16 +285,15 @@ func (x *BoostedPostsResponse) GetPosts() []*BoostedPost {
 	return nil
 }
 
-// Boost Edilmiş Post
 type BoostedPost struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PostId        string `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"`                       // Post ID
-	UserId        string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                       // Kullanıcı ID
-	Views         int32  `protobuf:"varint,3,opt,name=views,proto3" json:"views,omitempty"`                                      // Toplam izlenme
-	ProfileClicks int32  `protobuf:"varint,4,opt,name=profile_clicks,json=profileClicks,proto3" json:"profile_clicks,omitempty"` // Profile geçiş sayısı
+	PostId        string `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"`
+	UserId        string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Views         int32  `protobuf:"varint,3,opt,name=views,proto3" json:"views,omitempty"`
+	ProfileClicks int32  `protobuf:"varint,4,opt,name=profile_clicks,json=profileClicks,proto3" json:"profile_clicks,omitempty"`
 }
 
 func (x *BoostedPost) Reset() {
@@ -360,7 +354,6 @@ func (x *BoostedPost) GetProfileClicks() int32 {
 	return 0
 }
 
-// Boş istek mesajı
 type EmptyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

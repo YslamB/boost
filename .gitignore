@@ -3,3 +3,5 @@ Makefile
 config.yml
 */logs/
 *.log
+test.*
+./bin/
