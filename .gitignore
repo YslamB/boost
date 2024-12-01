@@ -1,7 +1,7 @@
 .env
 Makefile
 config.yml
-*/logs/
+./logs
 *.log
 test.*
 ./bin/

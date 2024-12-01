@@ -20,6 +20,7 @@ create table boost_posts (
     constraint boost_posts_post_id_fk
         foreign key ("post_id")
             references posts("id")
-                on update cascade on delete cascade
+                on update cascade on delete cascade,
+    unique("status","post_id")
 );
 create index boost_posts_post_id_index on boost_posts("post_id");
