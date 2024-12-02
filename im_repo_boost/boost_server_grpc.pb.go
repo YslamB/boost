@@ -20,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	BoostService_BoostPost_FullMethodName       = "/boost.BoostService/BoostPost"
+	BoostService_GetPosts_FullMethodName        = "/boost.BoostService/GetPosts"
+	BoostService_GetReels_FullMethodName        = "/boost.BoostService/GetReels"
 	BoostService_GetBoostedPosts_FullMethodName = "/boost.BoostService/GetBoostedPosts"
 	BoostService_GetBoostStats_FullMethodName   = "/boost.BoostService/GetBoostStats"
 )
@@ -29,7 +31,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BoostServiceClient interface {
 	BoostPost(ctx context.Context, in *BoostRequest, opts ...grpc.CallOption) (*BoostResponse, error)
-	GetBoostedPosts(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*BoostedPostsResponse, error)
+	GetPosts(ctx context.Context, in *PageLimitRequest, opts ...grpc.CallOption) (*PostsResponse, error)
+	GetReels(ctx context.Context, in *PageLimitRequest, opts ...grpc.CallOption) (*PostsResponse, error)
+	GetBoostedPosts(ctx context.Context, in *PageLimitRequest, opts ...grpc.CallOption) (*PostsResponse, error)
 	GetBoostStats(ctx context.Context, in *BoostStatsRequest, opts ...grpc.CallOption) (*BoostStatsResponse, error)
 }
 
@@ -51,9 +55,29 @@ func (c *boostServiceClient) BoostPost(ctx context.Context, in *BoostRequest, op
 	return out, nil
 }
 
-func (c *boostServiceClient) GetBoostedPosts(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*BoostedPostsResponse, error) {
+func (c *boostServiceClient) GetPosts(ctx context.Context, in *PageLimitRequest, opts ...grpc.CallOption) (*PostsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(BoostedPostsResponse)
+	out := new(PostsResponse)
+	err := c.cc.Invoke(ctx, BoostService_GetPosts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *boostServiceClient) GetReels(ctx context.Context, in *PageLimitRequest, opts ...grpc.CallOption) (*PostsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PostsResponse)
+	err := c.cc.Invoke(ctx, BoostService_GetReels_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *boostServiceClient) GetBoostedPosts(ctx context.Context, in *PageLimitRequest, opts ...grpc.CallOption) (*PostsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PostsResponse)
 	err := c.cc.Invoke(ctx, BoostService_GetBoostedPosts_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -76,7 +100,9 @@ func (c *boostServiceClient) GetBoostStats(ctx context.Context, in *BoostStatsRe
 // for forward compatibility.
 type BoostServiceServer interface {
 	BoostPost(context.Context, *BoostRequest) (*BoostResponse, error)
-	GetBoostedPosts(context.Context, *EmptyRequest) (*BoostedPostsResponse, error)
+	GetPosts(context.Context, *PageLimitRequest) (*PostsResponse, error)
+	GetReels(context.Context, *PageLimitRequest) (*PostsResponse, error)
+	GetBoostedPosts(context.Context, *PageLimitRequest) (*PostsResponse, error)
 	GetBoostStats(context.Context, *BoostStatsRequest) (*BoostStatsResponse, error)
 	mustEmbedUnimplementedBoostServiceServer()
 }
@@ -91,7 +117,13 @@ type UnimplementedBoostServiceServer struct{}
 func (UnimplementedBoostServiceServer) BoostPost(context.Context, *BoostRequest) (*BoostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BoostPost not implemented")
 }
-func (UnimplementedBoostServiceServer) GetBoostedPosts(context.Context, *EmptyRequest) (*BoostedPostsResponse, error) {
+func (UnimplementedBoostServiceServer) GetPosts(context.Context, *PageLimitRequest) (*PostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPosts not implemented")
+}
+func (UnimplementedBoostServiceServer) GetReels(context.Context, *PageLimitRequest) (*PostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReels not implemented")
+}
+func (UnimplementedBoostServiceServer) GetBoostedPosts(context.Context, *PageLimitRequest) (*PostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBoostedPosts not implemented")
 }
 func (UnimplementedBoostServiceServer) GetBoostStats(context.Context, *BoostStatsRequest) (*BoostStatsResponse, error) {
@@ -136,8 +168,44 @@ func _BoostService_BoostPost_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BoostService_GetPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PageLimitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BoostServiceServer).GetPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BoostService_GetPosts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BoostServiceServer).GetPosts(ctx, req.(*PageLimitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BoostService_GetReels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PageLimitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BoostServiceServer).GetReels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BoostService_GetReels_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BoostServiceServer).GetReels(ctx, req.(*PageLimitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BoostService_GetBoostedPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyRequest)
+	in := new(PageLimitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -149,7 +217,7 @@ func _BoostService_GetBoostedPosts_Handler(srv interface{}, ctx context.Context,
 		FullMethod: BoostService_GetBoostedPosts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BoostServiceServer).GetBoostedPosts(ctx, req.(*EmptyRequest))
+		return srv.(BoostServiceServer).GetBoostedPosts(ctx, req.(*PageLimitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +250,14 @@ var BoostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BoostPost",
 			Handler:    _BoostService_BoostPost_Handler,
+		},
+		{
+			MethodName: "GetPosts",
+			Handler:    _BoostService_GetPosts_Handler,
+		},
+		{
+			MethodName: "GetReels",
+			Handler:    _BoostService_GetReels_Handler,
 		},
 		{
 			MethodName: "GetBoostedPosts",

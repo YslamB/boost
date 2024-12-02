@@ -6,7 +6,9 @@ option go_package = "boost/im_repo_boost";
 
 service BoostService {
     rpc BoostPost(BoostRequest) returns (BoostResponse);
-    rpc GetBoostedPosts(EmptyRequest) returns (BoostedPostsResponse);
+    rpc GetPosts(PageLimitRequest) returns (PostsResponse);
+    rpc GetReels(PageLimitRequest) returns (PostsResponse);
+    rpc GetBoostedPosts(PageLimitRequest) returns (PostsResponse);
     rpc GetBoostStats(BoostStatsRequest) returns (BoostStatsResponse);
 }
 
@@ -31,15 +33,21 @@ message BoostStatsResponse {
     int32 profile_clicks = 2; 
 }
 
-message BoostedPostsResponse {
-    repeated BoostedPost posts = 1; 
+message PostsResponse {
+    bool status = 1;
+    repeated Posts posts = 2;
 }
 
-message BoostedPost {
-    string post_id = 1;       
-    string user_id = 2;       
-    int32 views = 3;          
-    int32 profile_clicks = 4; 
+message Posts {
+    string post_id = 1;
+    string user_id = 2;
+    int32 view_count = 3;          
+    int32 click_count = 4; 
+    string description = 5;
+    repeated string paths = 6;
 }
 
-message EmptyRequest {}
+message PageLimitRequest {
+    int32 page = 1;
+    int32 limit = 2;
+}
