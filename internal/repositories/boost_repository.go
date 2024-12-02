@@ -4,11 +4,9 @@ import (
 	pb "boost/im_repo_boost"
 	"boost/internal/queries"
 	"context"
-	"fmt"
 )
 
 func (repo *Repository) BoostPost(ctx context.Context, rq *pb.BoostRequest) (*pb.BoostResponse, error) {
-	fmt.Println(rq.PostId)
 	_, err := repo.psqlPool.Exec(ctx, queries.InsertBoostPost, rq.PostId)
 
 	if err != nil {
