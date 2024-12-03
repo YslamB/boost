@@ -43,6 +43,33 @@ func (repo *Repository) GetPosts(ctx context.Context, offset, limit int32) (*pb.
 	return &pb.PostsResponse{Status: true, Posts: posts}, nil
 }
 
+func (repo *Repository) GetBoostedPosts(ctx context.Context, offset, limit int32) (*pb.PostsResponse, error) {
+	rows, err := repo.psqlPool.Query(ctx, queries.GetBoostedPosts, limit, offset)
+	if err != nil {
+		return nil, err
+	}
+	var posts []*pb.Posts
+
+	for rows.Next() {
+		post := &pb.Posts{}
+
+		err := rows.Scan(
+			&post.Id,
+			&post.Description,
+			&post.Likes,
+			&post.Paths,
+			&post.CreatedAt,
+		)
+
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan row: %w", err)
+		}
+
+		posts = append(posts, post)
+	}
+	return &pb.PostsResponse{Status: true, Posts: posts}, nil
+}
+
 func (repo *Repository) GetBoostedPoosts(ctx context.Context, offset, limit int32) (*pb.PostsResponse, error) {
 	rows, err := repo.psqlPool.Query(ctx, queries.GetPosts, offset, limit)
 	if err != nil {

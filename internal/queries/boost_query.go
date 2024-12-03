@@ -47,3 +47,12 @@ SELECT id, description, likes, paths, created_at
 FROM boost;
 
 `
+
+var GetBoostedPosts = `
+SELECT 
+    p.id, p.description, p.likes, p.paths, p.created_at
+FROM boost_posts bp
+left join posts p on p.id = bp.post_id
+order by created_at
+LIMIT $1 OFFSET $2
+`

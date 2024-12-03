@@ -13,3 +13,9 @@ func (h *Handler) GetPosts(ctx context.Context, rq *pb.PageLimitRequest) (*pb.Po
 	offset := (rq.Page - 1) * rq.Limit
 	return h.repo.GetPosts(ctx, offset, rq.Limit)
 }
+
+// not ready
+func (h *Handler) GetBoostedPosts(ctx context.Context, rq *pb.PageLimitRequest) (*pb.PostsResponse, error) {
+	offset := (rq.Page - 1) * rq.Limit
+	return h.repo.GetBoostedPosts(ctx, offset, rq.Limit)
+}
