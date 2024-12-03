@@ -84,11 +84,17 @@ VALUES
 
 
 
+INSERT INTO boost_posts ("post_id", "click_count", "view_count", "limit_date", "status")
+VALUES
+    (1, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500),  NOW() + INTERVAL '10 days', 1),
+    (5, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500),  NOW() + INTERVAL '20 days', 1);
+
+INSERT INTO boost_posts ("post_id", "click_count", "view_count", "limit_view",  "status")
+VALUES
+    (10, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000),  1);
+
 INSERT INTO boost_posts ("post_id", "click_count", "view_count", "limit_view", "limit_date", "status")
 VALUES
-    (1, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000), NOW() + INTERVAL '10 days', 1),
-    (5, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000), NOW() + INTERVAL '20 days', 1),
-    (10, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000), NOW() + INTERVAL '15 days', 1),
     (15, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000), NOW() + INTERVAL '30 days', 1),
     (20, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000), NOW() + INTERVAL '5 days', 1),
     (25, FLOOR(RANDOM() * 100), FLOOR(RANDOM() * 500), 1000 + FLOOR(RANDOM() * 2000), NOW() + INTERVAL '25 days', 1),

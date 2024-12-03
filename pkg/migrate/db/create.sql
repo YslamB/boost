@@ -15,7 +15,7 @@ create table boost_posts (
     "post_id" int not null,
     "click_count" int not null default 0,
     "view_count" int not null default 0,
-    "limit_view" int not null default 0,
+    "limit_view" int,
     "limit_date" timestamp without time zone,
     "status" int default 1,
     constraint boost_posts_post_id_fk
@@ -24,4 +24,6 @@ create table boost_posts (
                 on update cascade on delete cascade,
     unique("post_id")
 );
-create index boost_posts_post_id_index on boost_posts("post_id");
+DROP INDEX IF EXISTS boost_posts_post_id_index;
+CREATE UNIQUE INDEX boost_posts_post_id_index ON boost_posts("post_id");
+ALTER TABLE boost_posts REPLICA IDENTITY USING INDEX boost_posts_post_id_index;
